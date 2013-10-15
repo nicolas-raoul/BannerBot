@@ -3,15 +3,22 @@
 # Set the Wikivoyage banner of a destination on Wikidata.
 
 import pywikibot
+
+page=u"Aachen"
+banner=u"Aachen banner Winter Panorama.jpg"
  
 print "Defining data source"
 site = pywikibot.Site("en", "wikivoyage")
-page = pywikibot.Page(site, u"Asahikawa")
-data = pywikibot.DataPage(page)
+repo = site.data_repository()
+page = pywikibot.Page(site, page)
+item = pywikibot.ItemPage.fromPage(page)
  
-print "Loading data"
-dictionary = data.get()
+#print "Test loading data"
+#dictionary = item.get()
 
 print "Setting Wikivoyage banner"
-data.editclaim(948, u"Kaguraoka Park (Asahikawa) banner.jpg")
+stringclaim = pywikibot.Claim(repo, u'P948')
+image = pywikibot.page.ImagePage(site, banner)
+stringclaim.setTarget(image)
+item.addClaim(stringclaim)
 print "Banner has been set"
